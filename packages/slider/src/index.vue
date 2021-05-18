@@ -151,6 +151,10 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    alwaysShowTooltip: {
+      type: Boolean,
+      default: false,
+    },
     formatTooltip: {
       type: Function as PropType<(val: number) => number | string>,
       default: undefined,

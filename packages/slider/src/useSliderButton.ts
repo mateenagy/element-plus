@@ -4,7 +4,7 @@ import { computed, ComputedRef, inject, nextTick, ref, watch } from 'vue'
 import { ISliderButtonInitData, ISliderButtonProps, ISliderProvider } from './slider.type'
 import debounce from 'lodash/debounce'
 
-const useTooltip = (props: ISliderButtonProps, formatTooltip: ComputedRef<(value: number) => number | string>, showTooltip: ComputedRef<boolean>) => {
+const useTooltip = (props: ISliderButtonProps, formatTooltip: ComputedRef<(value: number) => number | string>, showTooltip: ComputedRef<boolean> ) => {
 
   const tooltip = ref(null)
 
@@ -42,6 +42,7 @@ export const useSliderButton = (props: ISliderButtonProps, initData: ISliderButt
     max,
     step,
     showTooltip,
+    alwaysShowTooltip,
     precision,
     sliderSize,
     formatTooltip,
@@ -67,15 +68,25 @@ export const useSliderButton = (props: ISliderButtonProps, initData: ISliderButt
   })
 
   const handleMouseEnter = () => {
+    if(alwaysShowTooltip.value) {
+      return
+    }
     initData.hovering = true
     displayTooltip()
   }
 
   const handleMouseLeave = () => {
+    if(alwaysShowTooltip.value) {
+      return
+    }
     initData.hovering = false
     if (!initData.dragging) {
       hideTooltip()
     }
+  }
+
+  if (alwaysShowTooltip.value) {
+    displayTooltip()
   }
 
   const onButtonDown = (event: MouseEvent | TouchEvent) => {
@@ -166,6 +177,9 @@ export const useSliderButton = (props: ISliderButtonProps, initData: ISliderButt
       setTimeout(() => {
         initData.dragging = false
         if (!initData.hovering) {
+          if(alwaysShowTooltip.value) {
+            return
+          }
           hideTooltip()
         }
         if (!initData.isClick) {

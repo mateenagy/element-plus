@@ -35,6 +35,7 @@ export interface ISliderProvider {
   max: ComputedRef<number>
   step: ComputedRef<number>
   showTooltip: ComputedRef<boolean>
+  alwaysShowTooltip: ComputedRef<boolean>
   precision: ComputedRef<number>
   sliderSize: ComputedRef<number>
   formatTooltip: ComputedRef<(value: number) => number | string>
